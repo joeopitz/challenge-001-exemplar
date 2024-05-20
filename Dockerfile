@@ -46,6 +46,7 @@ COPY exemplar_only/run_internal.sh $BINS/run_internal.sh
 COPY exemplar_only/test_blob.py $BINS/test_blob.py
 
 ################################################
-FROM exemplar-cp-linux:base as exemplar-cp-linux-base
+# Use the image built in the first stage as the base for the second stage
+FROM exemplar-cp-linux-base as exemplar-cp-linux
 
 # Competitors can add changes to default docker image here
