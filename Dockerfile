@@ -19,23 +19,26 @@
 ###########################################
 FROM ubuntu:22.04 as exemplar-cp-linux-base
 
-# $BINS = directory to store build and run scripts
-# $SRC  = directory to store source code
-# $OUT  = directory to store build artifacts (harnesses, test binaries)
-# $WORK = directory to store intermediate files
-ENV BINS=/usr/local/sbin/   
+# Set environment variables
+ENV BINS=/usr/local/sbin/
 ENV SRC=/src/
 ENV OUT=/out/
 ENV WORK=/work/
 
 # Install necessary dependencies for the image
 COPY exemplar_only/patches/setup.sh $BINS/setup.sh
+
+# Debugging step: Verify that setup.sh has been copied correctly and has the right permissions
+RUN ls -l $BINS/setup.sh
+
+# Ensure setup.sh has execute permissions
+RUN chmod +x $BINS/setup.sh
+
+# Run setup.sh script
 RUN $BINS/setup.sh
 
 # Create directories
-RUN mkdir $OUT
-RUN mkdir $WORK
-RUN mkdir $SRC
+RUN mkdir -p $OUT $WORK $SRC
 
 # Copy other internal files that will be used inside the image
 COPY build.sh $BINS/build.sh
