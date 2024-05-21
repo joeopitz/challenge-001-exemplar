@@ -43,6 +43,6 @@ COPY exemplar_only/run_internal.sh $BINS/run_internal.sh
 COPY exemplar_only/test_blob.py $BINS/test_blob.py
 
 ################################################
-FROM exemplar-cp-linux:base as exemplar-cp-linux
+FROM exemplar-cp-linux:base as exemplar-cp-linux-base
 
 # Competitors can add changes to default docker image here
