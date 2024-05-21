@@ -19,26 +19,23 @@
 ###########################################
 FROM ubuntu:22.04 as exemplar-cp-linux-base
 
-# Set environment variables
-ENV BINS=/usr/local/sbin/
+# $BINS = directory to store build and run scripts
+# $SRC  = directory to store source code
+# $OUT  = directory to store build artifacts (harnesses, test binaries)
+# $WORK = directory to store intermediate files
+ENV BINS=/usr/local/sbin/   
 ENV SRC=/src/
 ENV OUT=/out/
 ENV WORK=/work/
 
 # Install necessary dependencies for the image
 COPY exemplar_only/patches/setup.sh $BINS/setup.sh
-
-# Debugging step: Verify that setup.sh has been copied correctly and has the right permissions
-RUN ls -l $BINS/setup.sh
-
-# Ensure setup.sh has execute permissions
-RUN chmod +x $BINS/setup.sh
-
-# Run setup.sh script
 RUN $BINS/setup.sh
 
 # Create directories
-RUN mkdir -p $OUT $WORK $SRC
+RUN mkdir $OUT
+RUN mkdir $WORK
+RUN mkdir $SRC
 
 # Copy other internal files that will be used inside the image
 COPY build.sh $BINS/build.sh
@@ -46,7 +43,6 @@ COPY exemplar_only/run_internal.sh $BINS/run_internal.sh
 COPY exemplar_only/test_blob.py $BINS/test_blob.py
 
 ################################################
-# Use the image built in the first stage as the base for the second stage
-FROM exemplar-cp-linux-base as exemplar-cp-linux
+FROM exemplar-cp-linux:base as exemplar-cp-linux
 
 # Competitors can add changes to default docker image here
