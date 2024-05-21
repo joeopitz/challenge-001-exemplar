@@ -29,7 +29,7 @@ ENV OUT=/out/
 ENV WORK=/work/
 
 # Install necessary dependencies for the image
-COPY exemplar_only/patches/setup.sh $BINS/setup.sh
+COPY exemplar_only/setup.sh $BINS/setup.sh
 RUN $BINS/setup.sh
 
 # Create directories
